@@ -9,18 +9,17 @@ from utils.export import save_feature_json
 def analyze_audio(path):
     """Main feature extraction and visualization pipeline."""
 
-    # Load raw audio array and sample rate
     y, sr, duration = load_audio(path)
 
     # Compute features
     rms = rms_energy(y)
     spec = spectral_centroid(y, sr)
 
-    # Normalize feature arrays
+    # Normalize 
     norm_rms = rms / np.max(rms)
     norm_spec = spec / np.max(spec)
 
-    # Build structured summary
+    # summary
     results = {
         "duration_sec": round(duration, 2),
         "sample_rate": sr,
@@ -28,7 +27,6 @@ def analyze_audio(path):
         "spec_mean": float(np.mean(norm_spec))
     }
 
-    # Save summary JSON for reference
     save_feature_json(results, "audio_features.json")
 
     # Visualize amplitude and frequency structure
@@ -75,13 +73,6 @@ def export_summary(results, out_path="summary.txt"):
 
 
 if __name__ == "__main__":
-    # Example run (replace with actual path or call dynamically)
     audio_file = "sample.wav"
     features = analyze_audio(audio_file)
     export_summary(features)
-
-    # Optional compare with another clip
-    # compare_clips("sample.wav", "other.wav")
-
-    # Optional view a quick amplitude plot
-    # quick_visual_summary(audio_file)
